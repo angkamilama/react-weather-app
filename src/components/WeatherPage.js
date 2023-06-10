@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Axios from "axios";
 
 function WeatherPage({ data, startNewPage, renderNewLocation }) {
   const retrievedData = { ...data };
