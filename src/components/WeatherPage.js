@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
 
 function WeatherPage({ data, startNewPage, renderNewLocation }) {
   const retrievedData = { ...data };
@@ -7,14 +8,21 @@ function WeatherPage({ data, startNewPage, renderNewLocation }) {
   return (
     <div className="main-weather-container">
       <div className="weather-box">
-        <div>
+        <div className="weather-heading">
           <input
-            placeholder="search another city"
+            className="input"
+            value={newLocation}
+            placeholder="City Search"
             onChange={(e) => {
               setNewLocation(e.target.value);
             }}
           />
-          <button onClick={() => renderNewLocation(newLocation)}>Search</button>
+          <AiOutlineSearch
+            onClick={() => renderNewLocation(newLocation)}
+            size={25}
+            color="white"
+            className="search-icon"
+          />
         </div>
         <div className="weather-info">
           <h2 className="weather-city">
@@ -35,8 +43,8 @@ function WeatherPage({ data, startNewPage, renderNewLocation }) {
           <h4>Humidity: {retrievedData.main.humidity}%</h4>
           <h4>Wind-speed: {retrievedData.wind.speed} m/s</h4>
         </div>
-        <button className="weather-search" onClick={() => startNewPage(false)}>
-          HomePage
+        <button className="homePage-btn" onClick={() => startNewPage(false)}>
+          Home
         </button>
       </div>
     </div>

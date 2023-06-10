@@ -9,11 +9,16 @@ function App() {
   const [showWeather, setShowWeather] = useState(false);
 
   const fetchData = () => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
-    return Axios.get(url).then((response) => {
-      setWeatherInfo(response.data);
-      setShowWeather((showWeather) => !showWeather);
-    });
+    if (!location) {
+      alert("Please enter a city");
+      return;
+    } else {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
+      return Axios.get(url).then((response) => {
+        setWeatherInfo(response.data);
+        setShowWeather((showWeather) => !showWeather);
+      });
+    }
   };
 
   const startNewPage = (val) => {
@@ -58,12 +63,17 @@ function App() {
             <div className="search-container">
               <input
                 name="city"
+                className="input"
+                value={location}
                 placeholder="Type City Name"
                 onChange={(e) => {
                   setLocation(e.target.value);
                 }}
               />
-              <button onClick={fetchData}> Search</button>
+
+              <button className="inputButton" onClick={fetchData}>
+                Search
+              </button>
             </div>
           </div>
         </div>
