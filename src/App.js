@@ -1,4 +1,4 @@
-import Axios from "axios";
+import axios from "axios";
 import { useState } from "react";
 import style from "./style.css";
 import WeatherPage from "./components/WeatherPage";
@@ -8,16 +8,23 @@ function App() {
   const [weatherInfo, setWeatherInfo] = useState({});
   const [showWeather, setShowWeather] = useState(false);
 
-  const fetchData = () => {
+  const fetchData = async () => {
     if (!location) {
       alert("Please enter a city");
       return;
     } else {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
-      return Axios.get(url).then((response) => {
-        setWeatherInfo(response.data);
-        setShowWeather((showWeather) => !showWeather);
-      });
+      const receivedData = await axios
+        .get(url)
+        .then((response) => {
+          setWeatherInfo(response.data);
+          setShowWeather((showWeather) => !showWeather);
+          setLocation("");
+        })
+        .catch((err) => {
+          console.log("there was an error");
+        });
+      return receivedData;
     }
   };
 
@@ -28,12 +35,28 @@ function App() {
     return;
   };
 
-  const renderNewLocation = (data) => {
-    setLocation((location) => data);
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
-    return Axios.get(url).then((response) => {
-      setWeatherInfo(response.data);
-    });
+  const renderNewLocation = async (data) => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
+
+    const newRetrievedData = await axios
+      .get(url)
+      .then((response) => {
+        setWeatherInfo(response.data);
+        setLocation("");
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made but the server responded with an error
+          console.log(error.response);
+        } else if (error.request) {
+          // Request made but no response is received from the server.
+          console.log(error.request);
+        } else {
+          // Error occured while setting up the request
+          console.log("error during setting up request");
+        }
+      });
+    return newRetrievedData;
   };
 
   return (

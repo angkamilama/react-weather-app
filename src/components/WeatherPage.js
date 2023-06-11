@@ -18,7 +18,10 @@ function WeatherPage({ data, startNewPage, renderNewLocation }) {
             }}
           />
           <AiOutlineSearch
-            onClick={() => renderNewLocation(newLocation)}
+            onClick={() => {
+              renderNewLocation(newLocation);
+              setNewLocation("");
+            }}
             size={25}
             color="white"
             className="search-icon"
