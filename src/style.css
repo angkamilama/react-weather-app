@@ -22,7 +22,7 @@
 
 .front-image {
     height: 40%;
-    width: 70%;
+    width: 65%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -59,18 +59,19 @@
     text-align: justify;
 }
 
-.heading-description .click{
-    font-size: 20px;
-    color:rgb(28, 206, 69);
-}
-.heading-description .weather {
-    color:rgb(206, 129, 28);
-    font-size: 20px;
-}
+.heading-description .click,
+.heading-description .weather,
 .heading-description .search {
-    color:rgb(221, 224, 21);
     font-size: 20px;
+    font-weight: bold;
+    color: rgb(234, 229, 76);
+
 }
+
+.heading-description .click {
+    color:rgb(49, 190, 70);
+}
+
 
 .search-container {
     display: flex;
@@ -109,7 +110,7 @@
     background-color:rgb(33, 148, 50) ;
     border: none;
     color: rgb(243, 239, 239);
-    box-shadow: 4px 6px 8px rgb(87, 86, 86);
+    box-shadow: 3px 3px 5px rgb(129, 128, 128);
     cursor: pointer;
 }
 
@@ -189,10 +190,8 @@
 .weather-description {
     height: 20vh;
     width: 60vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+    text-align: center;
+    line-height: 1.6;
     color: #C2DEDC;
     font-family: 'Noto Sans', sans-serif;
 }
@@ -221,7 +220,7 @@
     color: rgb(243, 239, 239);
     cursor: pointer;
     margin-left: 5px;
-    box-shadow: 4px 6px 8px rgb(87, 86, 86);
+    box-shadow: 3px 3px 5px rgb(129, 128, 128);
 }
 
 
