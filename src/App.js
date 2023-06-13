@@ -7,56 +7,43 @@ function App() {
   const [location, setLocation] = useState("");
   const [weatherInfo, setWeatherInfo] = useState({});
   const [showWeather, setShowWeather] = useState(false);
+  const [inputError, setInputError] = useState(false);
 
-  const fetchData = async () => {
-    if (!location) {
-      alert("Please enter a city");
+  const fetchData = async (value) => {
+    console.log(value);
+    if (value === "") {
+      setInputError(true);
       return;
     } else {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${value}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
       const receivedData = await axios
         .get(url)
         .then((response) => {
           setWeatherInfo(response.data);
-          setShowWeather((showWeather) => !showWeather);
+          setShowWeather((showWeather) => true);
           setLocation("");
         })
-        .catch((err) => {
-          console.log("there was an error");
+        .catch((error) => {
+          if (error.response) {
+            // Request made but the server responded with an error
+            console.log(error.response);
+          } else if (error.request) {
+            // Request made but no response is received from the server.
+            console.log(error.request);
+          } else {
+            // Error occured while setting up the request
+            console.log("error during setting up request");
+          }
         });
       return receivedData;
     }
   };
 
-  const startNewPage = (val) => {
-    if (val === false) {
+  const startNewPage = (value) => {
+    if (value === false) {
       setShowWeather(false);
     }
     return;
-  };
-
-  const renderNewLocation = async (data) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=d75acfd51254272f61cb01512c09920a`;
-
-    const newRetrievedData = await axios
-      .get(url)
-      .then((response) => {
-        setWeatherInfo(response.data);
-        setLocation("");
-      })
-      .catch((error) => {
-        if (error.response) {
-          // Request made but the server responded with an error
-          console.log(error.response);
-        } else if (error.request) {
-          // Request made but no response is received from the server.
-          console.log(error.request);
-        } else {
-          // Error occured while setting up the request
-          console.log("error during setting up request");
-        }
-      });
-    return newRetrievedData;
   };
 
   return (
@@ -64,13 +51,13 @@ function App() {
       {showWeather ? (
         <WeatherPage
           data={weatherInfo}
-          renderNewLocation={renderNewLocation}
+          fetchData={fetchData}
           startNewPage={startNewPage}
         />
       ) : (
         <div className="main-container">
           <div className="front-image">
-            <img src="Photos/weather-icon.png" />
+            <img src="photos/weather-icon.png" />
           </div>
           <div className="main-heading">
             <div className="heading">
@@ -78,23 +65,35 @@ function App() {
                 Weather <span className="heading-primary">News & Feed</span>
               </h2>
               <p className="heading-description">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam
-                voluptas exercitationem enim commodi, rerum cupiditate
-                perspiciatis amet. Omnis, ad nulla.
+                Do you want to find out about the weather in your favourite city
+                or compare weather between cities. It is just a
+                <span className="click"> click </span>away! Let's find it
+                together with my
+                <span className="weather"> Weather </span>{" "}
+                <span className="search">Search </span>
+                App.
               </p>
             </div>
             <div className="search-container">
-              <input
-                name="city"
-                className="input"
-                value={location}
-                placeholder="Type City Name"
-                onChange={(e) => {
-                  setLocation(e.target.value);
-                }}
-              />
-
-              <button className="inputButton" onClick={fetchData}>
+              <>
+                <input
+                  name="city"
+                  className="input"
+                  value={location}
+                  placeholder="City Name"
+                  onClick={() => setInputError(false)}
+                  onChange={(e) => {
+                    setLocation(e.target.value);
+                  }}
+                />
+                {inputError ? (
+                  <p className="inputError-msg">Enter a city name</p>
+                ) : null}
+              </>
+              <button
+                className="inputButton"
+                onClick={() => fetchData(location)}
+              >
                 Search
               </button>
             </div>
